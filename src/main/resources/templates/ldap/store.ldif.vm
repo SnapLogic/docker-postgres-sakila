@@ -1,0 +1,66 @@
+#
+# Sakila store information
+#
+# Note: this must be loaded after 'person.ldif' since that
+# file defines ou=groups.
+#
+
+#
+# Define the 'stores' organizational unit.
+#
+dn: ou=stores,{{ LDAP_BASE_DN }}
+changetype: add
+ou: stores
+objectClass: top
+objectClass: organizationalUnit
+description: generic groups
+
+#
+# Stores
+#
+# THIS IS NOT COMPLETE - it needs a 'structural' objectClass
+# but I haven't been able to find an appropriate one for a
+# facility.
+#
+## create one entry per store **
+#foreach($store in $storeList)
+dn: cn=${store.name},ou=stores,{{ LDAP_BASE_DN }}
+changetype: add
+objectClass: top
+cn: ${store.name}
+#if (${store.phoneNumber})
+telephoneNumber: ${store.phoneNumber}
+#end
+postalAddress: ${store.address.address}
+#if (${store.address.street})
+street: ${store.address.street}
+#end
+#if (${store.address.city})
+l: ${store.address.city}
+#end
+#if (${store.address.state})
+st: ${store.address.state}
+#end
+## if (${store.address.country}) **
+## c: ${store.address.country}   **
+## #end                          **
+#if (${store.postalCode})
+postalCode: ${store.address.postalCode}
+#end
+#if (${store.whenChanged})
+#whenChanged: ${store.whenChanged}
+#end
+
+#end
+
+#
+# create store group
+#
+dn: cn=stores,ou=groups,{{ LDAP_BASE_DN }}
+changetype: add
+objectclass: groupOfNames
+cn: stores
+## create one entry per store member **
+#foreach ($store in $storeList)
+member: cn=${store.name},ou=stores,{{ LDAP_BASE_DN }}
+#end

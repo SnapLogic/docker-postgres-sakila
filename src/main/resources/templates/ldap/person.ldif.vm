@@ -1,0 +1,33 @@
+#
+# Sakila user information
+#
+
+#
+# Define the 'people' organizational unit.
+#
+# We want all people to use the same pattern for their DN
+# (cn=name,ou=people,dc=...) so we have to use a tweaked Sakila
+# table where there's no overlap between staff_id and customer_id.
+#
+dn: ou=people,{{ LDAP_BASE_DN }}
+changetype: add
+ou: people
+objectClass: top
+objectClass: organizationalUnit
+description: all people
+
+#
+# Create 'groups' organizational unit.
+#
+# We have two groups for people - staff and customer -
+# and an individual can appear in both groups.
+#
+dn: ou=groups,{{ LDAP_BASE_DN }}
+changetype: add
+objectClass: organizationalUnit
+ou: groups
+description: generic groups
+
+#parse ("staff.ldif.vm")
+
+#parse ("customer.ldif.vm")

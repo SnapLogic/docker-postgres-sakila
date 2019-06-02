@@ -1,0 +1,92 @@
+#
+# Staff
+#
+## create one entry per staff member **
+#foreach($staff in $staffList)
+dn: cn=${staff.name},ou=people,{{ LDAP_BASE_DN }}
+changetype: add
+objectClass: top
+#if (${staff.firstName} && ${staff.lastName})
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+#end
+#if (${staff.userPassword})
+objectClass: simpleSecurityObject
+#end
+#if (${staff.homeDirectory})
+objectClass: posixAccount
+#end
+#if ($staff.krbPrincipal)
+objectClass: krbPrincipal
+#end
+#if ($staff.userCertificate)
+objectClass: strongAuthenticationUser
+#end
+uid: ${staff.id}
+sn: ${staff.lastName}
+givenName: ${staff.firstName}
+cn: ${staff.name}
+userPassword: ${staff.password}
+#if (${staff.homeDirectory})
+loginShell: /usr/sbin/nologin
+uidNumber: ${staff.id}
+gidNumber: 100
+homeDirectory: ${staff.homeDirectory}
+#if (${staff.gecos})
+gecos: ${staff.gecos}
+#end
+#end
+mail: ${staff.email}
+#if (${staff.phoneNumber})
+telephoneNumber: ${staff.phoneNumber}
+#end
+displayName: ${staff.name}
+postalAddress: ${staff.address.address}
+#if (${staff.address.street})
+street: ${staff.address.street}
+#end
+#if (${staff.address.city})
+l: ${staff.address.city}
+#end
+#if (${staff.address.state})
+st: ${staff.address.state}
+#end
+## #if (${staff.address.country}) **
+## co: ${staff.address.country}   **
+## #end                           **
+#if (${staff.postalCode})
+postalCode: ${staff.address.postalCode}
+#end
+#if (${staff.krbPrincipalName})
+krbPrincipalName: ${staff.krbPrincipal}
+#end
+#if (${staff.userCertificate})
+userCertificate;binary::
+${staff.userCertificate}
+#end
+#if (${staff.caCertificate})
+caCertificate;binary::
+${staff.caCertificate}
+#end
+#if (${staff.whenChanged})
+#whenChanged: ${staff.whenChanged}
+#end
+## #if (${staff.status})                 **
+## organizationalStatus: ${staff.status} **
+## #end                                  **
+
+#end
+
+#
+# create staff group
+#
+dn: cn=staff,ou=groups,{{ LDAP_BASE_DN }}
+changetype: add
+objectclass: groupOfNames
+cn: staff
+## create one entry per staff member **
+#foreach ($staff in $staffList)
+member: cn=${staff.name},ou=people,{{ LDAP_BASE_DN }}
+#end
+

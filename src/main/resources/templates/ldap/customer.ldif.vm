@@ -1,0 +1,85 @@
+#
+# Customers
+#
+## create one entry per customer member **
+#foreach ($customer in $customerList)
+dn: cn=${customer.name},ou=people,{{ LDAP_BASE_DN }}
+changetype: add
+objectClass: top
+#if (${customer.firstName} && ${customer.lastName})
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+#end
+#if ($customer.userPassword)
+objectClass: simpleSecurityObject
+#end
+#if ($customer.krbPrincipal)
+objectClass: krbPrincipal
+/#end
+#if ($customer.userCertificate)
+objectClass: strongAuthenticationUser
+#end
+uid: ${customer.id}
+sn: ${customer.lastName}
+givenName: ${customer.firstName}
+cn: ${customer.name}
+#if (${customer.password})
+userPassword: ${customer.password}
+#end
+mail: ${customer.email}
+#if (${customer.phoneNumber})
+telephoneNumber: ${customer.phoneNumber}
+#end
+displayName: ${customer.name}
+postalAddress: ${customer.address.address}
+#if (${customer.address.street})
+street: ${customer.address.street}
+#end
+#if (${customer.address.city})
+l: ${customer.address.city}
+#end
+#if (${customer.address.state})
+st: ${customer.address.state}
+#end
+## #if (${customer.address.country})  **
+## c: ${customer.address.country}     **
+## #end                               **
+#if (${customer.address.postalCode})
+postalCode: ${customer.address.postalCode}
+#end
+#if (${customer.krbPrincipalName})
+krbPrincipalName: ${customer.krbPrincipal}
+#end
+#if (${customer.userCertificate})
+userCertificate;binary::
+${customer.userCertificate}
+#end
+#if (${customer.caCertificate})
+caCertificate;binary::
+${customer.caCertificate}
+#end
+#if (${customer.whenCreated})
+#whenCreated: ${customer.whenCreated}
+#end
+#if (${customer.whenChanged})
+#whenChanged: ${customer.whenChanged}
+#end
+## #if (${customer.status})                 **
+## organizationalStatus: ${customer.status} **
+## #end                                     **
+
+
+#end
+
+#
+# create customer group
+#
+dn: cn=customer,ou=groups,{{ LDAP_BASE_DN }}
+changetype: add
+objectclass: groupOfNames
+cn: customer
+## create one entry per customer member **
+#foreach ($customer in $customerList)
+member: cn=${customer.name},ou=people,{{ LDAP_BASE_DN }}
+#end

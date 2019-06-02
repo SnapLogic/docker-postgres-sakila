@@ -1,0 +1,53 @@
+#
+# Sakila store information
+#
+# Note: this must be loaded after 'person.ldif' since that
+# file defines ou=groups.
+#
+
+#
+# Define the 'stores' organizational unit.
+#
+dn: ou=stores,{{ LDAP_BASE_DN }}
+changetype: add
+ou: stores
+objectClass: top
+objectClass: organizationalUnit
+description: generic groups
+
+#
+# Stores
+#
+# THIS IS NOT COMPLETE - it needs a 'structural' objectClass
+# but I haven't been able to find an appropriate one for a
+# facility.
+#
+dn: cn=Store 1,ou=stores,{{ LDAP_BASE_DN }}
+changetype: add
+objectClass: top
+cn: Store 1
+postalAddress: 47 MySakila Drive, Lethbridge Alberta, CA
+street: 47 MySakila Drive
+l: Lethbridge
+st: Alberta
+#whenChanged: 20190603123119.659Z
+
+dn: cn=Store 2,ou=stores,{{ LDAP_BASE_DN }}
+changetype: add
+objectClass: top
+cn: Store 2
+postalAddress: 28 MySQL Boulevard, Woodridge, AU
+street: 28 MySQL Boulevard
+l: Woodridge
+#whenChanged: 20190603123119.659Z
+
+
+#
+# create store group
+#
+dn: cn=stores,ou=groups,{{ LDAP_BASE_DN }}
+changetype: add
+objectclass: groupOfNames
+cn: stores
+member: cn=Store 1,ou=stores,{{ LDAP_BASE_DN }}
+member: cn=Store 2,ou=stores,{{ LDAP_BASE_DN }}

@@ -115,8 +115,11 @@ update country set code = 862, code2 = 'VE', code3 = 'VEN' where country = 'Vene
 update country set code = 704, code2 = 'VN', code3 = 'VNM' where country = 'Vietnam';
 update country set code = 850, code2 = 'VI', code3 = 'VIR' where country = 'Virgin Islands, U.S.';
 update country set code = 887, code2 = 'YE', code3 = 'YEM' where country = 'Yemen';
+update country set code = 891, code2 = 'CS', code3 = 'SCG', country = 'Serbia and Montenegro' where country = 'Yugoslavia';
 update country set code = 894, code2 = 'ZM', code3 = 'ZMB' where country = 'Zambia';
 COMMIT;
+
+-- in 2003 'Yugoslavia' became 'Serbia and Montenegro'
 
 -- create unique index code;
 -- create unique index code2;

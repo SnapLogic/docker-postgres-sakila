@@ -1,14 +1,6 @@
-# docker-postgres-sakila
-Adds sakila database to official postgres docker image.
-
-This project creates the following docker images
-
-* snapdevteam/postgres-sakila
-* snapdevteam/openldap-sakila
-
-Soon:
-
-* snapdevteam/mongo-sakila 
+# snapdevteam/openldap-sakila
+Osixia/openldap initialized with the user information from the Sakila
+sample database.
 
 ## Sakila
 
@@ -54,13 +46,3 @@ Passwords are stored as plaintext 'password' instead of encoded
 as {SSHA}. It can be set after initialization with a call to 'ldapmodify'.
 (I'll change the .ldif file if I can find a clean way to calculate it
 dynamically.)
-
-### Digital certificates
-
-(to be done)
-
-Digital certificates and private keys will be created for every
-record in the 'staff' and 'customer' tables. This allows testing
-applications that require strong mutual authentication. The LDAP
-.ldif files will be modified accordingly.
-

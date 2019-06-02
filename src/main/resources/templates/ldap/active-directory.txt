@@ -1,0 +1,26 @@
+It seems these objectClasses and attributes are required with
+Active Directory. It hasn't been tested yet.
+
+We should use separate velocity templates for LDAP and Active Directory
+entries. 
+
+### See https://support.microsoft.com/en-us/help/555636
+
+#for($customer in $customerList)
+objectCategory: CN=Person,CN=Schema,CN=Configuration,DC=snapdevteam,DC=com
+objectClass: user
+name: ${person.name}
+sAMAccountName: ${person.name}
+userAccountControl: 66048       -- definitely a constant
+uSNChange: 1556                 -- constant?
+uSNCreated: 1556                -- constant?
+whenChanged: ${person.whenChanged}
+whenCreated: ${person.whenCreated}
+## also...? **
+accountExpires: 0
+codePage: 0
+countryCode: 0
+instanceType: 4                 -- constant
+logonHours:: ////////////////////////////
+unicodePwd::IgBuAGUAdwBQAGEAcwBzAHcAbwByAGQAIgA=
+#end
