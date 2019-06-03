@@ -46,3 +46,23 @@ Passwords are stored as plaintext 'password' instead of encoded
 as {SSHA}. It can be set after initialization with a call to 'ldapmodify'.
 (I'll change the .ldif file if I can find a clean way to calculate it
 dynamically.)
+
+### Verification
+
+To verify the LDAP database has been properly initialized enter
+the following command:
+
+```
+ldapsearch -D cn=admin,dc=example,dc=com -w admin -b ou=people,dc=example,dc=com 
+```
+
+will return 603 entries and
+
+```
+ldapsearch -D cn=admin,dc=example,dc=com -w admin -b cn=staff,ou=groups,dc=example,dc=com 
+```
+
+will return 2 entries.
+
+('dc=example,dc=com' should be replaced with the appropriate value
+for the 'LDAP_DOMAIN' you specified when launching the docker image.)
